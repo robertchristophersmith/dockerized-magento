@@ -1,18 +1,18 @@
 installer:
   build: docker-images/installer
   environment:
-    DOMAIN: 127.0.0.1
+    DOMAIN: wufgear.com
     MAGENTO_ROOT: /var/www/html/web
     MYSQL_HOST: mysql
-    MYSQL_DATABASE: magento
+    MYSQL_DATABASE: raegfuw
     MYSQL_USER: root
-    MYSQL_PASSWORD: pw
+    MYSQL_PASSWORD: wufg3ar
     ADMIN_USERNAME: admin
     ADMIN_FIRSTNAME: Admin
-    ADMIN_LASTNAME: Inistrator
+    ADMIN_LASTNAME: istrator
     ADMIN_PASSWORD: password123
     ADMIN_FRONTNAME: admin
-    ADMIN_EMAIL: admin@example.com
+    ADMIN_EMAIL: robert@robertcsmith.consulting
     ENCRYPTIONKEY: 731aea833710535779fe8c7c49bc6c4d
   volumes_from:
     - nginx
@@ -29,9 +29,9 @@ nginx:
     - "443:443"
   links:
     - "php"
-  domainname: 127.0.0.1
+  domainname: wufgear.com
   environment:
-    DOMAIN: 127.0.0.1
+    DOMAIN: wufgear.com
     MAGENTO_ROOT: /var/www/html/web
     MAGENTO_DEVELOPERMODE: 1
     SSL_CERTIFICATE_PATH: /etc/ssl/certs/ssl-cert-snakeoil.pem
@@ -42,7 +42,7 @@ nginx:
   volumes_from:
     - php
 php:
-  build: docker-images/php/5.5-dev
+  build: docker-images/php/5.6
   links:
     - "cache:rediscache"
     - "sessions:redissession"
@@ -52,11 +52,13 @@ php:
   volumes:
     - .:/var/www/html
 mysql:
-  image: mysql
+  image: mariadb:10
   ports:
     - "3306:3306"
   environment:
-    MYSQL_ROOT_PASSWORD: pw
+    MYSQL_ROOT_PASSWORD: wufg3ar
+    MYSQL_DATABASE: raegfuw
+    MYSQL_USER: root
   volumes:
     - db:/var/lib/mysql
 solr:
