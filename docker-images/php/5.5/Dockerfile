@@ -7,6 +7,7 @@ RUN buildDeps=" \
         libmcrypt-dev \
         libxml2-dev \
         freetype* \
+        mysql-client \
     "; \
     set -x \
     && apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
@@ -30,10 +31,8 @@ COPY php-fpm.conf /usr/local/etc/
 # Make sure the volume mount point is empty
 RUN rm -rf /var/www/html/*
 
-# Install magerun
-RUN curl -o magerun https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
+# Install magerun using new url as described at http://magerun.net/changed-download-urls-for-phar-version/
+RUN curl -o magerun http://files.magerun.net/n98-magerun-latest.phar && \
     chmod +x ./magerun && \
     cp ./magerun /usr/local/bin/ && \
-    rm ./magerun && \
-    apt-get update && \
-    apt-get install -qy mysql-client
+    rm -f ./magerun
