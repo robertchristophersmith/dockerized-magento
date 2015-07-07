@@ -2,7 +2,7 @@
 
 if [ "$1" == "--help" ]; then
 echo "
-Usage: docker-cleanup [OPTION] [MATCH]
+Usage: docker-cleanup [OPTION] [ARGUMENT]
 Cleans docker items at various levels. Only 1 (ONE) option is allowed as they are
 mutually exclusive, however the --purge option takes one argument to it, see usage below
 DO NOT USE --nuclear unless you are aware of the consequences listed below:
