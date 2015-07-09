@@ -81,7 +81,8 @@ then
 
 	echo "Update fininished"
 	printLogonInformation
-
+	echo echo "========================================"
+	
 	runForever
 	exit 0
 fi
@@ -133,6 +134,7 @@ fixFilesystemPermissions
 
 echo "Installation fininished"
 printLogonInformation
+echo "========================================"
 
 runForever
 exit 0
