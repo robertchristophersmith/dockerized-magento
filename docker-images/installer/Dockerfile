@@ -2,10 +2,11 @@ FROM php:5.5-fpm
 
 # Configure PHP
 RUN buildDeps=" \
-        freetype* \
+        freetype* \        
         libpng12-dev \
         libjpeg-dev \
         libmcrypt-dev \
+        libxml2-dev \
         mysql-client \
     " \
     && set -x \
@@ -27,7 +28,13 @@ RUN buildDeps=" \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $buildDeps \
 
 COPY php/php.ini /usr/local/etc/php/php.ini
-COPY php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY php/php-fpm.conf /usr/local/etc/php-fpm.conf
+
+# Install magerun using new url as described at http://magerun.net/changed-download-urls-for-phar-version/
+RUN curl -o magerun http://files.magerun.net/n98-magerun-latest.phar \
+    && chmod +x ./magerun \
+    && cp ./magerun /usr/local/bin/ \
+    && rm -f ./magerun
 
 ENV INSTALLER_VERSION 1.0.0
 
@@ -40,12 +47,6 @@ RUN apt-get update && apt-get install -y \
         git-core \
         zip \
     && rm -rf /var/lib/apt/lists/*
-    
-# Install magerun using new url as described at http://magerun.net/changed-download-urls-for-phar-version/
-RUN curl -o magerun http://files.magerun.net/n98-magerun-latest.phar && \
-    && chmod +x ./magerun \
-    && cp ./magerun /usr/local/bin/ \
-    && rm -f ./magerun
 
 # Add a custom magerun configuration
 COPY magerun/n98-magerun.yaml.tmpl /etc/n98-magerun.yaml.tmpl
