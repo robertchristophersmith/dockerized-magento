@@ -27,14 +27,11 @@ RUN buildDeps=" \
         zip \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $buildDeps \
 
-COPY php/php.ini /usr/local/etc/php/php.ini
-COPY php/php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY ./php.ini /usr/local/etc/php/php.ini
+COPY ./php-fpm.conf /usr/local/etc/php-fpm.conf
 
 # Install magerun using new url as described at http://magerun.net/changed-download-urls-for-phar-version/
 RUN curl -o magerun http://files.magerun.net/n98-magerun-latest.phar \
     && chmod +x ./magerun \
     && cp ./magerun /usr/local/bin/ \
     && rm -f ./magerun
-
-# Make sure the volume mount point is empty
-RUN rm -rf /var/www/html/*
