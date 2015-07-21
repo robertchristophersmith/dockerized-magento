@@ -64,7 +64,7 @@ COPY ./magento/fpc.xml.tmpl /etc/fpc.xml.tmpl
 RUN curl -sS https://getcomposer.org/installer | php -- --filename=composer --install-dir=bin
 
 # Add the Installer
-COPY bin/install.sh /bin/install.sh
+COPY ./bin/install.sh /bin/install.sh
 RUN chmod +x /bin/install.sh
 
 ENTRYPOINT ["/bin/install.sh"]
