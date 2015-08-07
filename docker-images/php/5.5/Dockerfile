@@ -1,4 +1,4 @@
-FROM php:5.5-fpm
+FROM robertchristophersmith/docker-php-fpm
 
 # Configure PHP
 RUN buildDeps=" \
