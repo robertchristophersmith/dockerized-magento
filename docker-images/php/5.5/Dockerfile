@@ -1,4 +1,6 @@
-FROM robertchristophersmith/docker-php-fpm
+FROM php:5.6.10-fpm
+
+ENV MAGENTO_PHP_CONFIG_VERSION 1.0.0
 
 # Configure PHP
 RUN buildDeps=" \
@@ -7,12 +9,10 @@ RUN buildDeps=" \
         libjpeg-dev \
         libmcrypt-dev \
         libxml2-dev \
-        mysql-client \
     " \
     && set -x \
     && apt-get update \
-    && apt-get install -y $buildDeps --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/* \
+    && apt-get install -y $buildDeps mysql-client --no-install-recommends \
     && docker-php-ext-configure \
         gd --with-png-dir=/usr --with-jpeg-dir=/usr --with-freetype-dir \
     && docker-php-ext-install \
@@ -25,13 +25,13 @@ RUN buildDeps=" \
         pdo_mysql \
         soap \
         zip \
+    && rm -rf /var/lib/apt/lists/* \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $buildDeps
 
-COPY ./php.ini /usr/local/etc/php/php.ini
-COPY ./php-fpm.conf /usr/local/etc/php-fpm.conf
+COPY php.ini       /usr/local/etc/php/php.ini
+COPY php-fpm.conf  /usr/local/etc/php-fpm.conf
 
-# Install magerun using new url as described at http://magerun.net/changed-download-urls-for-phar-version/
-RUN curl -o magerun http://files.magerun.net/n98-magerun-latest.phar \
-    && chmod +x ./magerun \
-    && cp ./magerun /usr/local/bin/ \
-    && rm -f ./magerun
+WORKDIR /var/www/html
+
+EXPOSE 9000
+CMD ["php-fpm"]
